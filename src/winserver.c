@@ -13,7 +13,7 @@ logeintrag()
     time_t t = time(NULL);
     struct tm time = *localtime(&t);
     FILE *zeitupdate;
-    zeitupdate = fopen("/home/ubuntu-usr/verbind.log", "a");
+    zeitupdate = fopen("C:\\temp\\matura.log", "a");
     fprintf(zeitupdate, "neue verb. am: %d-%d-%d, %d:%d:%d,", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
     return 1;
 }
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
     FILE *filepointer;
 
-    filepointer = fopen("C:\\temp", "w");
+    filepointer = fopen("C:\\temp\\ausgabe.txt", "w");
     if (filepointer == 0)
     {
         fprintf(stderr, "Fehler beim Öffnen der Datei zum Schreiben , %s\n", strerror(errno));
