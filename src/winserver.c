@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     int n;
     char stringbuffer[512];
     char spielername[256];
+    const char *greeting = "Willkommen, gib deinen Spielernamen ein: ";
 
     if (argc < 2)
     {
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
 
     /* wsastartup arg1 is version we want to load, arg2 is a WSADATA-type
     where stuff gets stored when winsock has been loaded */
-    if (WSAStartup(MAKEWORD(2,2), &wsa) != 0)
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
     {
         wprintf(L"Fehler beim Initialisieren: %ld\n", WSAGetLastError());
         return 1;
@@ -87,34 +88,34 @@ int main(int argc, char *argv[])
 
     logeintrag();
 
-    memset(stringbuffer,0,sizeof(stringbuffer));
-    memset(spielername,0,sizeof(spielername));
-    n = write(newsock, "Willkommen, gib deinen Spielernamen ein: ", 42);
+    memset(stringbuffer, 0, sizeof(stringbuffer));
+    memset(spielername, 0, sizeof(spielername));
+    n = write(newsock, greeting, sizeof(greeting));
     if (n < 0)
     {
-        fprintf(stderr, "Fehler beim senden der Daten");
+        fprintf(stderr, "Fehler beim Senden der Daten, %s\n", strerror(errno));
     }
 
     n = read(newsock, stringbuffer, 256);
     if (n < 0)
     {
-        fprintf(stderr, "Fehler beim empfangen der Daten");
+        fprintf(stderr, "Fehler beim Empfangen der Daten, %s\n", strerror(errno));
     }
 
     n = write(newsock, "Datenaustausch erfolgreich", 27);
     if (n < 0)
     {
-        fprintf(stderr, "Fehler beim senden der Daten");
+        fprintf(stderr, "Fehler beim Senden der Antwort, %s\n", strerror(errno));
     }
 
     strcpy(spielername, stringbuffer);
 
     FILE *filepointer;
 
-    filepointer = fopen("/home/ubuntu-usr/spielername", "w");
+    filepointer = fopen("C:\\temp", "w");
     if (filepointer == 0)
     {
-        fprintf(stderr, "Fehler beim Öffnen der Datei zum Schreiben");
+        fprintf(stderr, "Fehler beim Öffnen der Datei zum Schreiben , %s\n", strerror(errno));
     }
 
     fprintf(filepointer, spielername);
