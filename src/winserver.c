@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	portnr = atoi(argv[1]);
 	if(portnr < 2000)
 	{
-		printf("WARNING: Port numbers under 2000 can be reserved and are not recommended");
+		printf("WARNING: Port numbers under 2000 can be reserved and are not recommended\n");
 	}
 
 
@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 	if((mysock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET)
 	{
 		printf("Fehler: %d", WSAGetLastError());
+		WSACleanup();
+		return 1;
 	}
 
 	//sockaddr_in structure
@@ -64,6 +66,9 @@ int main(int argc, char *argv[])
 	if(bind(mysock, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
 	{
 		printf("Socket Bind failed with error code: %d", WSAGetLastError());
+		closesocket(mysock);
+		WSACleanup();
+		return 1;
 	}
 
 	listen(mysock, 3);
@@ -74,6 +79,8 @@ int main(int argc, char *argv[])
 	if (newsock == INVALID_SOCKET)
 	{
 		wprintf(L"Fehler beim annehmen eingehender Verbindung: %ld\n", WSAGetLastError());
+		closesocket(mysock);
+		WSACleanup();
 		return 1;
 	}
 
