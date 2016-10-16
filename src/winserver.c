@@ -86,26 +86,33 @@ int main(int argc, char *argv[])
     }
 
 
-    logeintrag();
+    /* logeintrag(); */
 
     memset(stringbuffer, 0, sizeof(stringbuffer));
     memset(spielername, 0, sizeof(spielername));
-    n = write(newsock, greeting, sizeof(greeting));
+
+    fprintf(stdout, "before write\n");
+    n = send(newsock, greeting, sizeof(greeting), 0);
     if (n < 0)
     {
         fprintf(stderr, "Fehler beim Senden der Daten, %s\n", strerror(errno));
+        return(1);
     }
 
-    n = read(newsock, stringbuffer, 256);
+    fprintf(stdout, "before read\n");
+    n = recv(newsock, stringbuffer, 256, 0);
     if (n < 0)
     {
         fprintf(stderr, "Fehler beim Empfangen der Daten, %s\n", strerror(errno));
+        return(1);
     }
 
-    n = write(newsock, "Datenaustausch erfolgreich", 27);
+    fprintf(stdout, "before 2nd write\n");
+    n = send(newsock, "Datenaustausch erfolgreich", 27, 0);
     if (n < 0)
     {
         fprintf(stderr, "Fehler beim Senden der Antwort, %s\n", strerror(errno));
+        return(1);
     }
 
     strcpy(spielername, stringbuffer);
