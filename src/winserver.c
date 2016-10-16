@@ -46,14 +46,14 @@ int main(int argc, char *argv[])
     where stuff gets stored when winsock has been loaded */
     if (WSAStartup(MAKEWORD(2,2), &wsa) != 0)
     {
-        printf("Fehler: %d", WSAGetLastError());
+        wprintf(L"Fehler beim Initialisieren: %ld\n", WSAGetLastError());
         return 1;
     }
 
     /*next step: create socket using the socket() funktion */
     if((mysock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET)
     {
-        printf("Fehler: %d", WSAGetLastError());
+        wprintf(L"Fehler beim Anlegen des sockets: %ld\n", WSAGetLastError());
         WSACleanup();
         return 1;
     }
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 
     if(bind(mysock, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
     {
-        printf("Socket Bind failed with error code: %d", WSAGetLastError());
+        wprintf(L"Socket Bind failed with error code: %ld\n", WSAGetLastError());
         closesocket(mysock);
         WSACleanup();
         return 1;
